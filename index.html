@@ -356,12 +356,19 @@ body{
     box-shadow:0 1px 2px rgba(0,0,0,.4); }
   /* dois fios verticais, presos perto das extremidades — ATRÁS da placa (saem de trás da borda) */
   .ema-toggle-wrap .cord2{ position:absolute; top:-24px; width:2px; height:28px; margin-left:-1px;
-    background:linear-gradient(#2b1d0f,#6a4d28); z-index:1; transition:height .45s ease; }
+    background:linear-gradient(#2b1d0f,#6a4d28); z-index:1; }
   .ema-toggle-wrap .cord2.l{ left:calc(50% - 42px); }
   .ema-toggle-wrap .cord2.r{ left:calc(50% + 42px); }
-  /* gaveta aberta: o MESMO fio desce, atravessa por trás do toggle e emerge por baixo,
-     encontrando os fios das placas (34px→114px = 80px; +2px de sobreposição) */
-  .ema-toggle-wrap.open .cord2{ height:82px; }
+  /* ponte do MESMO fio: sai do RODAPÉ do toggle (top:100%) e cobre o vão de margens
+     FIXAS (8+8=16px, +2 de folga) até os fios das placas. Ancorada no rodapé (não numa
+     altura fixa) p/ encostar em qualquer aparelho — a fonte do celular mudava a altura
+     renderizada e abria fresta no mobile real. */
+  .ema-toggle-wrap.open .ema-toggle::before,
+  .ema-toggle-wrap.open .ema-toggle::after{
+    content:""; position:absolute; top:100%; width:2px; height:18px; margin-left:-1px;
+    background:linear-gradient(#2b1d0f,#6a4d28); }
+  .ema-toggle-wrap.open .ema-toggle::before{ left:calc(50% - 42px); }
+  .ema-toggle-wrap.open .ema-toggle::after{  left:calc(50% + 42px); }
   .ema-toggle{ position:relative; z-index:2;
     display:flex; align-items:center; justify-content:center; gap:8px; margin:0;
     padding:10px 22px; color:#180f07; cursor:pointer;
