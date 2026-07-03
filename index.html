@@ -219,6 +219,7 @@ body{
   --w:clamp(58px,8.3vw,104px);
   position:relative; width:var(--w); flex:none; cursor:pointer;
   text-decoration:none; color:var(--ink);
+  -webkit-tap-highlight-color:transparent;   /* sem o flash azul no toque (mobile) */
   transform-origin:top center; transition:transform .5s cubic-bezier(.4,1.4,.5,1);
   animation:sway 5s ease-in-out infinite;
 }
@@ -398,6 +399,8 @@ body{
   .ema-toggle{ position:relative; z-index:2;
     display:flex; align-items:center; justify-content:center; gap:8px; margin:0;
     padding:10px 22px; color:#180f07; cursor:pointer;
+    -webkit-tap-highlight-color:transparent;   /* sem o flash azul no toque */
+    -webkit-appearance:none; appearance:none;   /* remove estilo nativo do <button> no mobile */
     /* mesma madeira real das placas (coerência) */
     background:
       linear-gradient(160deg, rgba(224,199,144,.34), rgba(176,138,78,.30) 45%, rgba(138,104,54,.44)),
