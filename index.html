@@ -356,9 +356,12 @@ body{
     box-shadow:0 1px 2px rgba(0,0,0,.4); }
   /* dois fios verticais, presos perto das extremidades — ATRÁS da placa (saem de trás da borda) */
   .ema-toggle-wrap .cord2{ position:absolute; top:-24px; width:2px; height:28px; margin-left:-1px;
-    background:linear-gradient(#2b1d0f,#6a4d28); z-index:1; }
+    background:linear-gradient(#2b1d0f,#6a4d28); z-index:1; transition:height .45s ease; }
   .ema-toggle-wrap .cord2.l{ left:calc(50% - 42px); }
   .ema-toggle-wrap .cord2.r{ left:calc(50% + 42px); }
+  /* gaveta aberta: o MESMO fio desce, atravessa por trás do toggle e emerge por baixo,
+     encontrando os fios das placas (34px→114px = 80px; +2px de sobreposição) */
+  .ema-toggle-wrap.open .cord2{ height:82px; }
   .ema-toggle{ position:relative; z-index:2;
     display:flex; align-items:center; justify-content:center; gap:8px; margin:0;
     padding:10px 22px; color:#180f07; cursor:pointer;
@@ -568,8 +571,10 @@ body{
 (function(){
   const btn = document.getElementById('emaToggle');
   const row = document.getElementById('emaRow');
+  const wrap = btn.closest('.ema-toggle-wrap');
   btn.addEventListener('click', ()=>{
     const open = row.classList.toggle('open');
+    wrap.classList.toggle('open', open);   /* estende os fios do toggle p/ baixo (mesmo fio) */
     btn.setAttribute('aria-expanded', open);
   });
 })();
