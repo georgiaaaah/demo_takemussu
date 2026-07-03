@@ -127,27 +127,19 @@ body{
   min-height:calc(100svh - 2*var(--frame));
   padding:clamp(14px,2.5vw,34px);
   display:flex; flex-direction:column;
-  /* papel washi ENVELHECIDO: base quente + manchas de idade (foxing) */
+  /* papel washi REAL (textura gerada por IA) + leve tom quente por cima p/ casar com bambu/ema */
   background:
-    /* manchas de idade (foxing) — sutis, nas margens (não no miolo focal) */
-    radial-gradient(4% 5% at 9% 22%, rgba(112,70,30,.14) 0%, transparent 65%),
-    radial-gradient(3.5% 4% at 92% 28%, rgba(122,80,38,.13) 0%, transparent 65%),
-    radial-gradient(4% 5% at 6% 62%, rgba(100,62,26,.13) 0%, transparent 65%),
-    radial-gradient(3% 4% at 94% 70%, rgba(116,74,34,.12) 0%, transparent 65%),
-    radial-gradient(4% 4% at 50% 94%, rgba(108,68,30,.12) 0%, transparent 65%),
-    radial-gradient(3% 4% at 30% 9%, rgba(120,78,36,.12) 0%, transparent 65%),
-    /* variação ampla de tom (áreas mais escurecidas pelo tempo) */
-    radial-gradient(55% 45% at 12% 18%, rgba(120,84,42,.12) 0%, transparent 60%),
-    radial-gradient(46% 38% at 84% 22%, rgba(105,72,36,.15) 0%, transparent 55%),
-    radial-gradient(62% 55% at 74% 84%, rgba(86,56,26,.20) 0%, transparent 62%),
-    radial-gradient(40% 40% at 34% 60%, rgba(150,112,60,.10) 0%, transparent 55%),
-    radial-gradient(120% 95% at 20% 8%, #e8d6ae 0%, transparent 52%),
-    linear-gradient(160deg, var(--paper) 0%, var(--paper-2) 55%, var(--paper-3) 100%);
+    linear-gradient(160deg, rgba(208,172,116,.16), rgba(150,108,55,.12)),
+    url("assets/washi.webp");
+  background-size: cover, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply, normal;
 }
-/* nuvens de envelhecimento (grão grosso) + fibra fina */
+/* textura CSS antiga desligada — agora o washi real (imagem) faz o trabalho */
 .inner::before{
   content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  opacity:.7; mix-blend-mode:multiply;
+  opacity:0; mix-blend-mode:multiply;
   background-image:
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='0.014' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23c)' opacity='0.62'/></svg>"),
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/></svg>");
@@ -386,9 +378,9 @@ body{
     <div class="inner">
 
       <!-- pinturas sumi-e -->
-      <img class="decor montanha" src="assets/montanha.png" alt="Montanhas em sumi-e">
-      <img class="decor cerejeira" src="assets/cerejeira.png" alt="Cerejeira">
-      <img class="decor bambu" src="assets/bambu.png" alt="Bambu">
+      <img class="decor montanha" src="assets/montanha.webp" alt="Montanhas em sumi-e">
+      <img class="decor cerejeira" src="assets/cerejeira.webp" alt="Cerejeira">
+      <img class="decor bambu" src="assets/bambu.webp" alt="Bambu">
 
       <!-- selo hanko flutuante — SVG com textura de carimbo (bordas irregulares + tinta erodida) -->
       <svg class="hanko-float" viewBox="0 0 120 120" aria-label="Selo 和 (harmonia)">
@@ -462,7 +454,7 @@ body{
         </div>
 
         <aside class="hero-side">
-          <img class="sensei" src="assets/sensei.jpg" alt="O Sensei executando a técnica">
+          <img class="sensei" src="assets/sensei.webp" alt="O Sensei executando a técnica">
           <blockquote class="quote">
             "O verdadeiro Budo não está na vitória sobre o outro,<br>
             mas na vitória sobre si mesmo."
@@ -475,7 +467,7 @@ body{
         <div class="col"><b>ÚLTIMOS ENSINAMENTOS</b><br>A Natureza do Ki · Ler mais →</div>
         <div class="col keep"><b>BU GEI AI KI</b><br>A arte marcial que gera harmonia</div>
         <div class="foot-logo" title="Atago Dojo">
-          <img src="assets/logo.png" alt="Símbolo do Atago Dojo">
+          <img src="assets/logo.webp" alt="Símbolo do Atago Dojo">
           <span>ATAGO DOJO</span>
         </div>
         <div class="col socials-wrap">
