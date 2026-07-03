@@ -355,10 +355,10 @@ body{
     background:linear-gradient(180deg,var(--bamboo-l),var(--bamboo),var(--bamboo-d));
     box-shadow:0 1px 2px rgba(0,0,0,.4); }
   /* dois fios verticais, presos perto das extremidades — ATRÁS da placa (saem de trás da borda) */
-  .ema-toggle-wrap .cord2{ position:absolute; top:-24px; width:2px; height:28px;
+  .ema-toggle-wrap .cord2{ position:absolute; top:-24px; width:2px; height:28px; margin-left:-1px;
     background:linear-gradient(#2b1d0f,#6a4d28); z-index:1; }
-  .ema-toggle-wrap .cord2.l{ left:15%; }
-  .ema-toggle-wrap .cord2.r{ right:15%; }
+  .ema-toggle-wrap .cord2.l{ left:calc(50% - 42px); }
+  .ema-toggle-wrap .cord2.r{ left:calc(50% + 42px); }
   .ema-toggle{ position:relative; z-index:2;
     display:flex; align-items:center; justify-content:center; gap:8px; margin:0;
     padding:10px 22px; color:#180f07; cursor:pointer;
@@ -373,10 +373,11 @@ body{
     max-height:0; overflow:hidden; transition:max-height .45s ease, padding .45s ease;
     padding:0; }
   .ema-row.open{ max-height:640px; padding:6px 0; }
-  /* fio vertical único ligando todas as placas (aparece nos vãos; encoberto pelas placas opacas) */
-  .ema-row::before{ content:""; position:absolute; left:50%; top:-8px; bottom:6px; width:2px;
-    transform:translateX(-50%); z-index:0;
-    background:linear-gradient(#2b1d0f,#6a4d28); }
+  /* os MESMOS 2 fios do toggle descem por trás de todas as placas (aparecem nos vãos) */
+  .ema-row::before, .ema-row::after{ content:""; position:absolute; top:0; bottom:6px; width:2px;
+    margin-left:-1px; z-index:0; background:linear-gradient(#2b1d0f,#6a4d28); }
+  .ema-row::before{ left:calc(50% - 42px); }
+  .ema-row::after{  left:calc(50% + 42px); }
   .ema{ position:relative; z-index:1; --w:min(290px,82vw); flex-direction:row; animation:none; }
   /* no touch, tocar não deve "entortar" a placa (o :hover grudava e girava) */
   .ema:hover{ transform:none; }
