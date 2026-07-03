@@ -359,10 +359,29 @@ body{
   background:linear-gradient(0deg, rgba(233,225,206,.5) 0%, rgba(233,225,206,.14) 55%, transparent 100%);
   filter:blur(6px); }
 
+/* ---------- PULL-TO-REFRESH custom (miolo rola no app-shell → refresh nativo não existe) ---------- */
+.ptr{ position:fixed; top:calc(var(--frame) + 4px); left:50%; z-index:35;
+  width:36px; height:36px; border-radius:50%; display:grid; place-items:center;
+  pointer-events:none; opacity:0;
+  transform:translate(-50%,-44px);
+  background:radial-gradient(closest-side, rgba(240,231,210,.96), rgba(226,213,180,.9));
+  box-shadow:0 2px 7px rgba(60,40,20,.28), inset 0 0 0 1px rgba(120,80,40,.25); }
+.ptr.show{ opacity:1; }
+.ptr-ic{ font-size:21px; line-height:1; color:var(--vermilion);
+  transition:transform .08s linear; }
+.ptr.ready .ptr-ic{ color:#7a2016; }
+.ptr.spin .ptr-ic{ animation:ptrspin .8s linear infinite; }
+@keyframes ptrspin{ to{ transform:rotate(360deg); } }
+
 /* ============================================================
    RESPONSIVO — desktop (quadro) → mobile (pergaminho vertical)
    ============================================================ */
 @media (max-width:900px){
+  /* APP-SHELL: o MIOLO rola (não o body) → a barra de URL não mexe → moldura fixa não treme.
+     O pull-to-refresh nativo depende do body rolar, então é reimplementado em JS (script no fim). */
+  html,body{ height:100%; overflow:hidden; }
+  .washi{ height:100dvh; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain; }
   .hero{ grid-template-columns:1fr; }
   .hero-side{ order:2; margin-top:10px; }
   .decor.montanha{ width:100%; opacity:.7; }
@@ -463,6 +482,9 @@ body{
 <!-- pétalas + névoa estática -->
 <div class="sky" id="sky"></div>
 <div class="fog"></div>
+
+<!-- indicador do pull-to-refresh custom (mobile) -->
+<div class="ptr" id="ptr" aria-hidden="true"><span class="ptr-ic">↻</span></div>
 
 <div class="washi">
   <div class="stage">
@@ -619,6 +641,58 @@ body{
     wrap.classList.toggle('open', open);   /* estende os fios do toggle p/ baixo (mesmo fio) */
     btn.setAttribute('aria-expanded', open);
   });
+})();
+
+/* ---------- pull-to-refresh custom (mobile) ----------
+   Com o app-shell, o miolo (.washi) rola e o body não → o refresh nativo some.
+   Reimplementado aqui: só ativa no topo do miolo, com resistência; recarrega ao soltar além do limite. */
+(function(){
+  const scroller = document.querySelector('.washi');
+  const ptr = document.getElementById('ptr');
+  const icon = ptr && ptr.querySelector('.ptr-ic');
+  if(!scroller || !ptr) return;
+  const mobile = () => window.matchMedia('(max-width:900px)').matches;
+  const THRESH = 72, MAX = 110, RESIST = 0.5;
+  let startY = 0, pulling = false, pull = 0, ready = false;
+
+  function apply(p){
+    pull = p;
+    /* só o indicador se move (sem transladar o conteúdo → não revela o fundo do papel) */
+    ptr.style.transform = 'translate(-50%,' + (p - 44).toFixed(1) + 'px)';
+    ptr.classList.toggle('show', p > 6);
+    ready = p >= THRESH;
+    ptr.classList.toggle('ready', ready);
+    if(icon) icon.style.transform = 'rotate(' + (p * 2.6).toFixed(0) + 'deg)';
+  }
+  function ease(on){
+    ptr.style.transition = on ? 'transform .28s cubic-bezier(.22,1,.36,1), opacity .2s ease' : '';
+  }
+  function reset(){ ease(true); apply(0); setTimeout(()=>ease(false), 300); }
+
+  scroller.addEventListener('touchstart', (e)=>{
+    if(!mobile() || scroller.scrollTop > 0){ pulling = false; return; }
+    startY = e.touches[0].clientY; pulling = true; ease(false);
+  }, {passive:true});
+
+  scroller.addEventListener('touchmove', (e)=>{
+    if(!pulling) return;
+    if(scroller.scrollTop > 0){ pulling = false; if(pull) reset(); return; }
+    const dy = e.touches[0].clientY - startY;
+    if(dy <= 0){ if(pull) apply(0); return; }   // puxando pra cima = scroll normal
+    e.preventDefault();                          // segura o gesto no topo
+    apply(Math.min(MAX, dy * RESIST));
+  }, {passive:false});
+
+  function end(){
+    if(!pulling) return; pulling = false;
+    if(ready){
+      ptr.classList.add('spin'); ease(true);
+      ptr.style.transform = 'translate(-50%,' + (THRESH - 44) + 'px)';
+      setTimeout(()=> location.reload(), 420);
+    } else reset();
+  }
+  scroller.addEventListener('touchend', end, {passive:true});
+  scroller.addEventListener('touchcancel', end, {passive:true});
 })();
 </script>
 </body>
