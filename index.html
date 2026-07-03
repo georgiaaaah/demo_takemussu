@@ -363,14 +363,19 @@ body{
   .ema-toggle-wrap .cord2.r{ left:calc(50% + 42px); }
   /* ponte do MESMO fio: sai do RODAPÉ do toggle (top:100%) e cobre o vão de margens
      FIXAS (8+8=16px, +2 de folga) até os fios das placas. Ancorada no rodapé (não numa
-     altura fixa) p/ encostar em qualquer aparelho — a fonte do celular mudava a altura
-     renderizada e abria fresta no mobile real. */
+     altura fixa) p/ encostar em qualquer aparelho. SEMPRE presente (scaleY do topo):
+     ao FECHAR, recolhe por ÚLTIMO — espera as placas retraírem (delay) e só então é
+     puxada pra dentro do menu; ao ABRIR, desce logo. */
+  .ema-toggle::before, .ema-toggle::after{
+    content:""; position:absolute; top:100%; width:2px; height:18px; margin-left:-1px;
+    background:linear-gradient(#2b1d0f,#6a4d28);
+    transform-origin:top center; transform:scaleY(0);
+    transition:transform .18s ease .4s; }        /* fechando: aguarda a gaveta recolher */
+  .ema-toggle::before{ left:calc(50% - 42px); }
+  .ema-toggle::after{  left:calc(50% + 42px); }
   .ema-toggle-wrap.open .ema-toggle::before,
   .ema-toggle-wrap.open .ema-toggle::after{
-    content:""; position:absolute; top:100%; width:2px; height:18px; margin-left:-1px;
-    background:linear-gradient(#2b1d0f,#6a4d28); }
-  .ema-toggle-wrap.open .ema-toggle::before{ left:calc(50% - 42px); }
-  .ema-toggle-wrap.open .ema-toggle::after{  left:calc(50% + 42px); }
+    transform:scaleY(1); transition:transform .18s ease; }   /* abrindo: desce logo */
   .ema-toggle{ position:relative; z-index:2;
     display:flex; align-items:center; justify-content:center; gap:8px; margin:0;
     padding:10px 22px; color:#180f07; cursor:pointer;
