@@ -460,6 +460,15 @@ body{
   .foot{ justify-content:center; text-align:center; }
   .foot .col{ display:none; }
   .foot .col.keep{ display:block; }
+
+  /* legibilidade no celular: textos-chave um pouco maiores e mais escuros
+     (no vw pequeno o clamp caía no mínimo ~9px; alguns eram cinza sobre a névoa) */
+  .quote{ font-size:13px; }
+  .quote br{ display:none; }   /* deixa a frase fluir natural no tamanho maior (sem quebra órfã) */
+  .quote cite{ font-size:11px; color:var(--ink); }
+  .foot .col.keep{ font-size:10.5px; color:#33261a; }
+  .foot .col.keep b{ font-size:11.5px; color:#1b1109; }
+  .foot-logo span{ font-size:11px; color:#1b1109; }
 }
 
 /* acessibilidade: movimento reduzido */
