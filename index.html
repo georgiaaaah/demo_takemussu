@@ -360,8 +360,8 @@ body{
   .ema-toggle-wrap .cord2.l{ left:15%; }
   .ema-toggle-wrap .cord2.r{ right:15%; }
   .ema-toggle{ position:relative; z-index:2;
-    display:flex; align-items:center; justify-content:center; gap:10px; margin:0;
-    padding:13px 26px; min-width:154px; color:#2c1c0c; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:8px; margin:0;
+    padding:10px 22px; color:#180f07; cursor:pointer;
     background:linear-gradient(160deg,var(--wood-l),var(--wood) 45%,var(--wood-d));
     border:none; border-radius:6px;   /* RETANGULAR, sem a linha preta padrão do <button> */
     box-shadow:inset 0 2px 4px rgba(255,235,190,.5), inset 0 -4px 7px rgba(70,45,20,.5),
@@ -369,18 +369,25 @@ body{
     font-family:var(--serif); font-size:14px; letter-spacing:.16em;
     text-shadow:0 1px 0 rgba(255,240,200,.35); }
   .ema-toggle .k{ font-family:var(--jp); font-size:20px; font-weight:700; }
-  .ema-row{ flex-direction:column; align-items:center; gap:8px; margin-top:8px;
+  .ema-row{ position:relative; flex-direction:column; align-items:center; gap:8px; margin-top:8px;
     max-height:0; overflow:hidden; transition:max-height .45s ease, padding .45s ease;
     padding:0; }
-  .ema-row.open{ max-height:560px; padding:6px 0; }
-  .ema{ --w:min(290px,82vw); flex-direction:row; animation:none; }
+  .ema-row.open{ max-height:640px; padding:6px 0; }
+  /* fio vertical único ligando todas as placas (aparece nos vãos; encoberto pelas placas opacas) */
+  .ema-row::before{ content:""; position:absolute; left:50%; top:-8px; bottom:6px; width:2px;
+    transform:translateX(-50%); z-index:0;
+    background:linear-gradient(#2b1d0f,#6a4d28); }
+  .ema{ position:relative; z-index:1; --w:min(290px,82vw); flex-direction:row; animation:none; }
+  /* no touch, tocar não deve "entortar" a placa (o :hover grudava e girava) */
+  .ema:hover{ transform:none; }
+  .ema:active .plate{ filter:brightness(1.05); }
   .ema .plate{ display:flex; flex-direction:row; align-items:center; gap:14px;
     justify-content:flex-start; text-align:left;
     clip-path:none; border-radius:8px; border-left:4px solid var(--vermilion);
     padding:9px 18px; min-height:46px; }
   .ema .kanji{ writing-mode:horizontal-tb; min-height:auto; height:auto; margin:0;
-    font-size:19px; flex:none; width:44px; }
-  .ema .lbl{ font-size:10px; line-height:1.2; }
+    font-size:19px; flex:none; width:44px; color:#160e06; }
+  .ema .lbl{ font-size:10px; line-height:1.2; color:#241708; }
   .ema .cord{ display:none; }
 }
 @media (max-width:520px){
