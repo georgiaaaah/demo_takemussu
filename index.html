@@ -294,12 +294,19 @@ body{
   -webkit-mask-image:radial-gradient(84% 88% at 50% 50%, #000 64%, transparent 100%);
   mask-image:radial-gradient(84% 88% at 50% 50%, #000 64%, transparent 100%);
   opacity:0; animation:fadeUp 1.2s ease forwards 3.4s; }
+/* citação: tinta sobre o papel, sem moldura reta — ancorada por uma pincelada vermilion */
 .quote{
-  position:relative; max-width:min(92%,440px); padding:15px 22px;
-  border:1px solid rgba(90,60,30,.5); background:rgba(221,200,160,.4);
-  font-style:italic; font-size:clamp(11px,1.3vw,15px); line-height:1.65; color:var(--ink);
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
+  position:relative; max-width:min(92%,440px); padding:2px 6px 2px 22px;
+  font-style:italic; font-size:clamp(11px,1.35vw,15px); line-height:1.7; color:var(--ink);
   opacity:0; animation:fadeUp 1s ease forwards 5.4s; }
+.quote p{ margin:0; }
+/* traço vertical vermelho com pontas esmaecidas (jeito de pincel); só ao lado do texto, não da assinatura */
+.quote::before{ content:""; position:absolute; left:4px; top:4px; bottom:24px; width:3px;
+  border-radius:2px;
+  background:linear-gradient(180deg, transparent 0, var(--vermilion) 14%, #8f2318 86%, transparent 100%); }
+.quote cite{ display:block; text-align:right; margin-top:9px;
+  font-style:normal; font-size:clamp(9px,1.05vw,12px); letter-spacing:.2em;
+  text-transform:uppercase; color:var(--ink-soft); }
 
 @keyframes fadeUp{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:none;} }
 @keyframes sway{ 0%,100%{transform:rotate(-1.5deg);} 50%{transform:rotate(1.5deg);} }
@@ -549,8 +556,9 @@ body{
         <aside class="hero-side">
           <img class="sensei" src="assets/sensei.webp" alt="O Sensei executando a técnica">
           <blockquote class="quote">
-            "O verdadeiro Budo não está na vitória sobre o outro,<br>
-            mas na vitória sobre si mesmo."
+            <p>"O verdadeiro Budo não está na vitória sobre o outro,<br>
+            mas na vitória sobre si mesmo."</p>
+            <cite>— O-Sensei</cite>
           </blockquote>
         </aside>
       </section>
