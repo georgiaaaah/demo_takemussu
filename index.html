@@ -27,7 +27,10 @@
   --vermilion:  #a52a1f;   /* hanko */
   --gold:       #b08d4c;
 
-  --frame: clamp(11px, 2.3vw, 38px);   /* espessura da moldura (mais fina, fiel à referência) */
+  --fw: clamp(8px, 1.4vw, 20px);       /* espessura da cana de bambu (fina) */
+  --m:  clamp(4px, 0.7vw, 11px);       /* margem escura (matting) em volta */
+  --bleed: 70px;                       /* quanto as canas passam da borda (saem da tela) */
+  --frame: calc(var(--m) + var(--fw)); /* zona total ocupada pela moldura */
   --serif: "Georgia","Times New Roman",serif;
   --jp: "Yu Mincho","Hiragino Mincho ProN","MS Mincho","Noto Serif JP",serif;
 }
@@ -67,51 +70,70 @@ body{
 /* ============================================================
    MOLDURA DE BAMBU (fixa) — 4 canas + amarrações nos cantos
    ============================================================ */
-.frame-bar{ position:fixed; z-index:40; pointer-events:none; }
+.frame-bar{ position:fixed; z-index:40; pointer-events:none; overflow:hidden; }
+/* grão de fibra sobre a cana (quebra o aspecto plástico) */
+.frame-bar::before{ content:""; position:absolute; inset:0; pointer-events:none;
+  opacity:.16; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><filter id='b'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23b)' opacity='0.5'/></svg>");
+  background-size:80px 80px; }
 
-/* ---- cana HORIZONTAL (topo/base): gradiente cilíndrico p/ dar volume ---- */
+/* ---- canas HORIZONTAIS (topo/base) — passam por cima nos cantos, pontas sobrando ---- */
 .frame-top,.frame-bottom{
-  left:0; right:0; height:var(--frame); z-index:41; /* passa por cima das verticais no canto */
+  left:calc(-1 * var(--bleed)); right:calc(-1 * var(--bleed)); height:var(--fw); z-index:41;
   background:
-    linear-gradient(180deg,
-      #33260f 0%, #5a4222 8%, #86642f 22%, #b8934e 38%,
-      #e6cd8e 50%,                     /* brilho especular (topo do cilindro) */
-      #bb9450 62%, #866430 78%, #543d1e 92%, #2c2010 100%);
-  box-shadow: inset 0 4px 6px rgba(255,242,205,.4), inset 0 -6px 11px rgba(0,0,0,.5);
+    repeating-linear-gradient(90deg, rgba(70,52,22,.07) 0 2px, transparent 2px 6px,
+      rgba(255,240,205,.05) 6px 8px, transparent 8px 13px),
+    linear-gradient(180deg, #43361b 0%, #6b562a 14%, #8f7538 32%, #ab9150 48%,
+      #b9a05a 53%, #967d42 68%, #6a5529 84%, #3f321a 100%);
+  /* volume (insets) + sombra projetada no papel definidos por lado abaixo */
 }
 .frame-top::after,.frame-bottom::after{ content:""; position:absolute; inset:0;
   background:repeating-linear-gradient(90deg,
-    transparent 0 clamp(90px,16vw,180px),
-    rgba(255,238,190,.32) clamp(90px,16vw,180px),
-    rgba(46,32,14,.6)  calc(clamp(90px,16vw,180px) + 3px),
-    rgba(46,32,14,.6)  calc(clamp(90px,16vw,180px) + 7px),
-    rgba(255,238,190,.28) calc(clamp(90px,16vw,180px) + 10px),
-    transparent calc(clamp(90px,16vw,180px) + 13px));
+    transparent 0 calc(clamp(60px,12vw,130px) - 4px),
+    rgba(255,240,200,.18) calc(clamp(60px,12vw,130px) - 4px),
+    rgba(46,33,14,.5) clamp(60px,12vw,130px),
+    rgba(46,33,14,.5) calc(clamp(60px,12vw,130px) + 2px),
+    rgba(255,240,200,.14) calc(clamp(60px,12vw,130px) + 2px),
+    transparent calc(clamp(60px,12vw,130px) + 6px));
 }
-.frame-top{ top:0; } .frame-bottom{ bottom:0; }
+.frame-top{ top:var(--m);
+  box-shadow: inset 0 2px 4px rgba(255,240,200,.24), inset 0 -4px 8px rgba(0,0,0,.42),
+              0 7px 17px -5px rgba(35,22,8,.2); }   /* sombra p/ baixo, no papel */
+.frame-bottom{ bottom:var(--m);
+  box-shadow: inset 0 2px 4px rgba(255,240,200,.24), inset 0 -4px 8px rgba(0,0,0,.42),
+              0 -7px 17px -5px rgba(35,22,8,.2); }  /* sombra p/ cima, no papel */
 
-/* ---- cana VERTICAL (esq/dir) ---- */
+/* ---- canas VERTICAIS (esq/dir) ---- */
 .frame-left,.frame-right{
-  top:0; bottom:0; width:var(--frame); z-index:40;
+  top:calc(-1 * var(--bleed)); bottom:calc(-1 * var(--bleed)); width:var(--fw); z-index:40;
   background:
-    linear-gradient(90deg,
-      #33260f 0%, #5a4222 8%, #86642f 22%, #b8934e 38%,
-      #e6cd8e 50%,
-      #bb9450 62%, #866430 78%, #543d1e 92%, #2c2010 100%);
-  box-shadow: inset 4px 0 6px rgba(255,242,205,.4), inset -6px 0 11px rgba(0,0,0,.5);
+    repeating-linear-gradient(0deg, rgba(70,52,22,.07) 0 2px, transparent 2px 6px,
+      rgba(255,240,205,.05) 6px 8px, transparent 8px 13px),
+    linear-gradient(90deg, #43361b 0%, #6b562a 14%, #8f7538 32%, #ab9150 48%,
+      #b9a05a 53%, #967d42 68%, #6a5529 84%, #3f321a 100%);
+  /* volume (insets) + sombra projetada no papel definidos por lado abaixo */
 }
 .frame-left::after,.frame-right::after{ content:""; position:absolute; inset:0;
   background:repeating-linear-gradient(0deg,
-    transparent 0 clamp(90px,16vh,180px),
-    rgba(255,238,190,.32) clamp(90px,16vh,180px),
-    rgba(46,32,14,.6)  calc(clamp(90px,16vh,180px) + 3px),
-    rgba(46,32,14,.6)  calc(clamp(90px,16vh,180px) + 7px),
-    rgba(255,238,190,.28) calc(clamp(90px,16vh,180px) + 10px),
-    transparent calc(clamp(90px,16vh,180px) + 13px));
+    transparent 0 calc(clamp(60px,12vh,130px) - 4px),
+    rgba(255,240,200,.18) calc(clamp(60px,12vh,130px) - 4px),
+    rgba(46,33,14,.5) clamp(60px,12vh,130px),
+    rgba(46,33,14,.5) calc(clamp(60px,12vh,130px) + 2px),
+    rgba(255,240,200,.14) calc(clamp(60px,12vh,130px) + 2px),
+    transparent calc(clamp(60px,12vh,130px) + 6px));
 }
-.frame-left{ left:0; } .frame-right{ right:0; }
+.frame-left{ left:var(--m);
+  box-shadow: inset 2px 0 4px rgba(255,240,200,.24), inset -4px 0 8px rgba(0,0,0,.42),
+              7px 0 17px -5px rgba(35,22,8,.2); }   /* sombra p/ direita, no papel */
+.frame-right{ right:var(--m);
+  box-shadow: inset 2px 0 4px rgba(255,240,200,.24), inset -4px 0 8px rgba(0,0,0,.42),
+              -7px 0 17px -5px rgba(35,22,8,.2); }  /* sombra p/ esquerda, no papel */
 
-/* cantos: canas cruzadas limpas (sem quadrados). Sombra sutil onde a horizontal cruza a vertical */
+/* margem escura (matting) em volta, como na referência bordas.jpeg */
+.matting{ position:fixed; inset:0; z-index:39; pointer-events:none;
+  border:var(--m) solid #241a0d;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.5), inset 0 0 clamp(6px,1.4vw,18px) rgba(0,0,0,.3); }
+
 .lash{ display:none; }
 
 /* ============================================================
@@ -214,7 +236,7 @@ body{
 .ema:hover .plate{ filter:brightness(1.06); }
 
 /* botão-gaveta (só mobile) */
-.ema-toggle{ display:none; }
+.ema-toggle, .ema-toggle-wrap{ display:none; }
 
 /* ============================================================
    HERO (miolo central)
@@ -325,12 +347,28 @@ body{
 
   /* menu vira gaveta */
   .beam{ display:none; }
-  .ema-toggle{ display:flex; align-items:center; gap:8px; margin:8px auto 0;
-    background:linear-gradient(160deg,var(--wood-l),var(--wood-d));
-    border:1px solid #5f4620; border-radius:6px; color:#2c1c0c; cursor:pointer;
-    padding:8px 14px; font-family:var(--serif); font-size:13px; letter-spacing:.1em;
-    box-shadow:0 3px 8px rgba(0,0,0,.25); }
-  .ema-toggle .k{ font-family:var(--jp); font-size:18px; font-weight:700; }
+  /* toggle = tabuleta RETANGULAR (mesma textura/relevo do desktop), pendurada por 2 fios */
+  .ema-toggle-wrap{ display:block; position:relative; width:max-content; margin:32px auto 8px; }
+  /* varinha de onde pendem os fios (unifica com o beam do desktop) */
+  .ema-toggle-wrap::before{ content:""; position:absolute; top:-27px; left:6%; right:6%; height:5px;
+    border-radius:3px; z-index:3;
+    background:linear-gradient(180deg,var(--bamboo-l),var(--bamboo),var(--bamboo-d));
+    box-shadow:0 1px 2px rgba(0,0,0,.4); }
+  /* dois fios verticais, presos perto das extremidades — ATRÁS da placa (saem de trás da borda) */
+  .ema-toggle-wrap .cord2{ position:absolute; top:-24px; width:2px; height:28px;
+    background:linear-gradient(#2b1d0f,#6a4d28); z-index:1; }
+  .ema-toggle-wrap .cord2.l{ left:15%; }
+  .ema-toggle-wrap .cord2.r{ right:15%; }
+  .ema-toggle{ position:relative; z-index:2;
+    display:flex; align-items:center; justify-content:center; gap:10px; margin:0;
+    padding:13px 26px; min-width:154px; color:#2c1c0c; cursor:pointer;
+    background:linear-gradient(160deg,var(--wood-l),var(--wood) 45%,var(--wood-d));
+    border:none; border-radius:6px;   /* RETANGULAR, sem a linha preta padrão do <button> */
+    box-shadow:inset 0 2px 4px rgba(255,235,190,.5), inset 0 -4px 7px rgba(70,45,20,.5),
+               0 5px 10px rgba(0,0,0,.28);         /* relevo + sombra = profundidade */
+    font-family:var(--serif); font-size:14px; letter-spacing:.16em;
+    text-shadow:0 1px 0 rgba(255,240,200,.35); }
+  .ema-toggle .k{ font-family:var(--jp); font-size:20px; font-weight:700; }
   .ema-row{ flex-direction:column; align-items:center; gap:8px; margin-top:8px;
     max-height:0; overflow:hidden; transition:max-height .45s ease, padding .45s ease;
     padding:0; }
@@ -363,7 +401,8 @@ body{
 </head>
 <body>
 
-<!-- moldura de bambu (fixa) -->
+<!-- margem escura + moldura de bambu (fixas) -->
+<div class="matting"></div>
 <div class="frame-bar frame-top"></div>
 <div class="frame-bar frame-bottom"></div>
 <div class="frame-bar frame-left"></div>
@@ -409,9 +448,12 @@ body{
       </svg>
 
       <!-- menu ema -->
-      <button class="ema-toggle" id="emaToggle" aria-expanded="false">
-        <span class="k">武</span> MENU
-      </button>
+      <div class="ema-toggle-wrap">
+        <span class="cord2 l"></span><span class="cord2 r"></span>
+        <button class="ema-toggle" id="emaToggle" aria-expanded="false">
+          <span class="k">武</span> MENU
+        </button>
+      </div>
       <div class="beam"></div>
       <nav class="ema-row" id="emaRow">
         <a class="ema" style="--i:0"><span class="cord"></span><span class="plate"><span class="kanji">始</span><span class="lbl">Início</span></span></a>
