@@ -355,6 +355,12 @@ body{
    RESPONSIVO — desktop (quadro) → mobile (pergaminho vertical)
    ============================================================ */
 @media (max-width:900px){
+  /* APP-SHELL: o MIOLO rola (não o body). Rolar um container interno não aciona
+     a barra de URL do celular → o viewport não muda de altura → a moldura fixa
+     não treme (fix do glitch dos bambus na base ao rolar). */
+  html,body{ height:100%; overflow:hidden; }
+  .washi{ height:100dvh; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
+
   .hero{ grid-template-columns:1fr; }
   .hero-side{ order:2; margin-top:10px; }
   .decor.montanha{ width:100%; opacity:.7; }
