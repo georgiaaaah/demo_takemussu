@@ -81,11 +81,14 @@ body{
 /* ---- canas HORIZONTAIS (topo/base) — passam por cima nos cantos, pontas sobrando ---- */
 .frame-top,.frame-bottom{
   left:calc(-1 * var(--bleed)); right:calc(-1 * var(--bleed)); height:var(--fw); z-index:41;
+  /* fibra real (girada 90° = grão no comprimento da cana) + gradiente cilíndrico (volume).
+     background-blend-mode mistura DENTRO da cana — não referencia o papel que rola (sem glitch) */
   background:
-    repeating-linear-gradient(90deg, rgba(70,52,22,.07) 0 2px, transparent 2px 6px,
-      rgba(255,240,205,.05) 6px 8px, transparent 8px 13px),
     linear-gradient(180deg, #43361b 0%, #6b562a 14%, #8f7538 32%, #ab9150 48%,
-      #b9a05a 53%, #967d42 68%, #6a5529 84%, #3f321a 100%);
+      #b9a05a 53%, #967d42 68%, #6a5529 84%, #3f321a 100%),
+    url("assets/bambu-tex-h.webp");
+  background-size:cover; background-position:center;
+  background-blend-mode:soft-light, normal;
   /* volume (insets) + sombra projetada no papel definidos por lado abaixo */
 }
 .frame-top::after,.frame-bottom::after{ content:""; position:absolute; inset:0;
@@ -107,11 +110,13 @@ body{
 /* ---- canas VERTICAIS (esq/dir) ---- */
 .frame-left,.frame-right{
   top:calc(-1 * var(--bleed)); bottom:calc(-1 * var(--bleed)); width:var(--fw); z-index:40;
+  /* fibra real (grão vertical = no comprimento da cana) + gradiente cilíndrico (volume) */
   background:
-    repeating-linear-gradient(0deg, rgba(70,52,22,.07) 0 2px, transparent 2px 6px,
-      rgba(255,240,205,.05) 6px 8px, transparent 8px 13px),
     linear-gradient(90deg, #43361b 0%, #6b562a 14%, #8f7538 32%, #ab9150 48%,
-      #b9a05a 53%, #967d42 68%, #6a5529 84%, #3f321a 100%);
+      #b9a05a 53%, #967d42 68%, #6a5529 84%, #3f321a 100%),
+    url("assets/bambu-tex.webp");
+  background-size:cover; background-position:center;
+  background-blend-mode:soft-light, normal;
   /* volume (insets) + sombra projetada no papel definidos por lado abaixo */
 }
 .frame-left::after,.frame-right::after{ content:""; position:absolute; inset:0;
@@ -219,7 +224,11 @@ body{
 .ema .plate{
   position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
   padding:calc(var(--w)*.14) 4px calc(var(--w)*.1);
-  background:linear-gradient(160deg,var(--wood-l),var(--wood) 45%,var(--wood-d));
+  /* textura real de madeira + tint quente translúcido por cima (mantém cor da UI e o relevo) */
+  background:
+    linear-gradient(160deg, rgba(224,199,144,.34), rgba(176,138,78,.30) 45%, rgba(138,104,54,.44)),
+    url("assets/madeira.webp");
+  background-size:cover; background-position:center;
   border:1px solid #5f4620; border-radius:5px;
   /* topo em "casinha" (ema) */
   clip-path:polygon(50% 0, 100% 20%, 100% 100%, 0 100%, 0 20%);
@@ -379,7 +388,11 @@ body{
   .ema-toggle{ position:relative; z-index:2;
     display:flex; align-items:center; justify-content:center; gap:8px; margin:0;
     padding:10px 22px; color:#180f07; cursor:pointer;
-    background:linear-gradient(160deg,var(--wood-l),var(--wood) 45%,var(--wood-d));
+    /* mesma madeira real das placas (coerência) */
+    background:
+      linear-gradient(160deg, rgba(224,199,144,.34), rgba(176,138,78,.30) 45%, rgba(138,104,54,.44)),
+      url("assets/madeira.webp");
+    background-size:cover; background-position:center;
     border:none; border-radius:6px;   /* RETANGULAR, sem a linha preta padrão do <button> */
     box-shadow:inset 0 2px 4px rgba(255,235,190,.5), inset 0 -4px 7px rgba(70,45,20,.5),
                0 5px 10px rgba(0,0,0,.28);         /* relevo + sombra = profundidade */
