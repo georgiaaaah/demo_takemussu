@@ -71,7 +71,7 @@ body{
    MOLDURA DE BAMBU (fixa) — 4 canas + amarrações nos cantos
    ============================================================ */
 .frame-bar{ position:fixed; z-index:40; pointer-events:none; overflow:hidden;
-  transform:translateZ(0); backface-visibility:hidden; }  /* camada de GPU: no scroll mobile a moldura DESLIZA (cacheada) em vez de repintar contra o papel */
+  transform:translateZ(0); backface-visibility:hidden; will-change:transform; }  /* camada de GPU (will-change promove de fato): no scroll mobile a moldura DESLIZA em vez de repintar/tremer */
 /* grão de fibra sobre a cana (quebra o aspecto plástico) */
 .frame-bar::before{ content:""; position:absolute; inset:0; pointer-events:none;
   opacity:.12;   /* grão SEM mix-blend-mode: não re-mistura contra o papel que rola atrás (era o repaint/glitch) */
@@ -141,7 +141,7 @@ body{
 
 /* margem escura (matting) em volta, como na referência bordas.jpeg */
 .matting{ position:fixed; inset:0; z-index:39; pointer-events:none;
-  transform:translateZ(0); backface-visibility:hidden;   /* mesma camada de GPU da moldura (base do viewport) */
+  transform:translateZ(0); backface-visibility:hidden; will-change:transform;   /* mesma camada de GPU da moldura (base do viewport) */
   border:var(--m) solid #241a0d;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.5), inset 0 0 clamp(6px,1.4vw,18px) rgba(0,0,0,.3); }
 
@@ -363,12 +363,6 @@ body{
    RESPONSIVO — desktop (quadro) → mobile (pergaminho vertical)
    ============================================================ */
 @media (max-width:900px){
-  /* APP-SHELL: o MIOLO rola (não o body). Rolar um container interno não aciona
-     a barra de URL do celular → o viewport não muda de altura → a moldura fixa
-     não treme (fix do glitch dos bambus na base ao rolar). */
-  html,body{ height:100%; overflow:hidden; }
-  .washi{ height:100dvh; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
-
   .hero{ grid-template-columns:1fr; }
   .hero-side{ order:2; margin-top:10px; }
   .decor.montanha{ width:100%; opacity:.7; }
