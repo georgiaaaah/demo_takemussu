@@ -87,8 +87,10 @@ body{
     linear-gradient(180deg, #43361b 0%, #6b562a 14%, #8f7538 32%, #ab9150 48%,
       #b9a05a 53%, #967d42 68%, #6a5529 84%, #3f321a 100%),
     url("assets/bambu-tex-h.webp");
-  background-size:cover; background-position:center;
-  background-blend-mode:soft-light, normal;
+  background-size:cover, auto 200px;             /* textura em escala natural (não zoom do cover) */
+  background-position:center;
+  background-repeat:no-repeat, repeat;
+  background-blend-mode:overlay, normal;         /* overlay = fibra mais presente */
   /* volume (insets) + sombra projetada no papel definidos por lado abaixo */
 }
 .frame-top::after,.frame-bottom::after{ content:""; position:absolute; inset:0;
@@ -115,8 +117,10 @@ body{
     linear-gradient(90deg, #43361b 0%, #6b562a 14%, #8f7538 32%, #ab9150 48%,
       #b9a05a 53%, #967d42 68%, #6a5529 84%, #3f321a 100%),
     url("assets/bambu-tex.webp");
-  background-size:cover; background-position:center;
-  background-blend-mode:soft-light, normal;
+  background-size:cover, 200px auto;             /* textura em escala natural (não zoom do cover) */
+  background-position:center;
+  background-repeat:no-repeat, repeat;
+  background-blend-mode:overlay, normal;         /* overlay = fibra mais presente */
   /* volume (insets) + sombra projetada no papel definidos por lado abaixo */
 }
 .frame-left::after,.frame-right::after{ content:""; position:absolute; inset:0;
