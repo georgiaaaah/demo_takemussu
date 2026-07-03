@@ -1,10 +1,11 @@
-# Versionar SOMENTE o demo (o site). Tudo mais fica de fora:
+# Versionar SOMENTE o site (index.html + assets). Tudo mais fica de fora:
 # materiais privados do cliente, artes-fonte soltas, planos internos, caches.
 /*
-!/demo/
+!/index.html
+!/assets/
 !/README.md
 !/.gitignore
 
-# dentro do demo, ignora caches/temporários eventuais
-demo/**/*.af
-demo/**/*.af~lock~
+# nunca versionar dentro de assets:
+assets/**/*.af
+assets/**/*.af~lock~

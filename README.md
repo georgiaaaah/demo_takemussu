@@ -5,13 +5,14 @@ Demo de landing page em forma de **pergaminho japonês antigo** para o **Atago D
 
 ## Como abrir
 
-Abra `demo/index.html` num navegador — ou sirva a pasta `demo/` localmente:
+Abra `index.html` num navegador — ou sirva a pasta localmente:
 
 ```bash
-cd demo
 python -m http.server 8777
 # depois acesse http://localhost:8777/index.html
 ```
+
+Deploy: site estático servido a partir da raiz do repositório (Vercel/qualquer host estático).
 
 ## O que a demo tem
 
@@ -27,7 +28,7 @@ python -m http.server 8777
 
 ## Stack
 
-HTML/CSS/JS autocontido, sem dependências externas. Assets em `demo/assets/`.
+HTML/CSS/JS autocontido, sem dependências externas. Assets em `assets/`.
 
 ## Roadmap
 
