@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Site é exclusivamente claro: impede o "modo escuro forçado" do Samsung
+     Internet (e afins) de escurecer o papel e lavar a caligrafia. -->
+<meta name="color-scheme" content="light">
 <title>Takemussu Aiki — Atago Dojo</title>
 <style>
 /* ============================================================
@@ -12,6 +15,8 @@
    ============================================================ */
 
 :root{
+  color-scheme: only light;   /* reforço: nada de reescrita p/ dark mode */
+
   --ink:        #2b2018;   /* tinta sumi */
   --ink-soft:   #5a4a3a;
   --paper:      #ddc8a0;   /* washi envelhecido */
